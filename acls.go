@@ -4,13 +4,13 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"log/slog"
 	"math"
 	"os"
 	"sort"
 	"strings"
 	"syscall"
 
-	log "github.com/sirupsen/logrus"
 	"golang.org/x/sys/unix"
 )
 
@@ -111,7 +111,7 @@ func (a *ACL) ToByteSlice(result *bytes.Buffer) {
 func (a *ACL) AddEntry(e *ACLEntry) error {
 	deleted := a.DeleteEntry(e)
 	if deleted != nil {
-		log.Debugf("Existing entry %q deleted", deleted.String())
+		slog.Debug("Existing entry deleted", "entry", deleted.String())
 	}
 	a.entries = append(a.entries, e)
 	return nil
